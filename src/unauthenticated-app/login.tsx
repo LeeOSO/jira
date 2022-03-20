@@ -1,22 +1,8 @@
 import React, { FormEvent } from "react";
-import { useAuh } from "../../context/auth-context";
+import { useAuh } from "../context/auth-context";
 
-const apiURL = process.env.REACT_APP_API_URL;
 export const LoginScreen = () => {
-  // const login = (user: { username: string; password: string }) => {
-  //   fetch(`${apiURL}/register?`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(user),
-  //   }).then(async (response) => {
-  //     if (response.ok) {
-  //     }
-  //   });
-  // };
   const { login, user } = useAuh();
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const username = (event.currentTarget.elements[0] as HTMLInputElement)
@@ -30,7 +16,6 @@ export const LoginScreen = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        {user ? <div>登录成功，用户名：{user?.name}</div> : null}
         <label htmlFor={"username"}>用户名</label>
         <input type={"text"} id={"username"} />
       </div>
