@@ -1,6 +1,6 @@
 import qs from "qs";
 import * as auth from "auth-provider";
-import { useAuh } from "../context/auth-context";
+import { useAuth } from "../context/auth-context";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
@@ -45,7 +45,7 @@ export const http = async (
 };
 
 export const useHttp = () => {
-  const { user } = useAuh();
+  const { user } = useAuth();
   //ts 操作符
   // typeof: ts中静态，js中动态。 typeof 操作符可以用来获取一个变量或对象的类型。
   // utility type: 用泛型给他传入一个其他类型，然后utility type对这个类型进行某种操作

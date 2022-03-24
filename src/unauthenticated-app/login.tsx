@@ -1,10 +1,10 @@
 import { Button, Form, Input } from "antd";
 import React, { FormEvent } from "react";
 import { LongButton } from "unauthenticated-app";
-import { useAuh } from "../context/auth-context";
+import { useAuth } from "../context/auth-context";
 
 export const LoginScreen = () => {
-  const { login, user } = useAuh();
+  const { login, user } = useAuth();
   const handleSubmit = (values: { username: string; password: string }) => {
     //鸭子类型"面向接口编程而不是面向对象类型。只要类型匹配就可以
     login(values);

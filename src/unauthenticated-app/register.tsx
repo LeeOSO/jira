@@ -1,10 +1,10 @@
-import { useAuh } from "../context/auth-context";
+import { useAuth } from "../context/auth-context";
 import React, { FormEvent } from "react";
 import { Button, Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app";
 
 export const RegisterScreen = () => {
-  const { register, user } = useAuh();
+  const { register, user } = useAuth();
   const handleSubmit = (values: { username: string; password: string }) => {
     //鸭子类型"面向接口编程而不是面向对象类型。只要类型匹配就可以
     register(values);
