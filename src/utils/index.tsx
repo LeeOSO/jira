@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 
 export const isFalsy = (value: any) => (value === 0 ? false : !value);
+export const isVoid = (value: any) =>
+  value === undefined || value === null || value === "";
 
-export const cleanObject = (object: object) => {
+//ts中object类型广泛，函数也是object类型
+export const cleanObject = (object: { [key: string]: unknown }) => {
   const result = { ...object };
   Object.keys(result).forEach((key) => {
-    // @ts-ignore
     const value = result[key];
-    if (isFalsy(value)) {
-      // @ts-ignore
+    if (isVoid(value)) {
       delete result[key];
     }
   });

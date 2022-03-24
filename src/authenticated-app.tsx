@@ -3,31 +3,41 @@ import React from "react";
 import { ProjectListScreen } from "./screens/project-list";
 import styled from "@emotion/styled";
 import { Row } from "./components/lib";
+import { ReactComponent } from "./assets/software-logo.svg";
+import { Button, Dropdown, Menu } from "antd";
 
 export const AuthenticatedApp = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   return (
-    <div>
+    <Container>
       <Header between={true}>
         <HeaderLeft gap={true}>
-          <h2>1</h2>
+          <ReactComponent width={"18rem"} color={"rgb(38, 132, 255)"} />
           <h2>2</h2>
           <h2>3</h2>
         </HeaderLeft>
         <HeaderRight>
-          <button
-            onClick={() => {
-              logout();
-            }}
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item key={"logout"}>
+                  <Button type={"link"} onClick={logout}>
+                    登出
+                  </Button>
+                </Menu.Item>
+              </Menu>
+            }
           >
-            登出
-          </button>
+            <Button type={"link"} onClick={(e) => e.preventDefault()}>
+              HI, {user?.name}
+            </Button>
+          </Dropdown>
         </HeaderRight>
       </Header>
       <Main>
         <ProjectListScreen />
       </Main>
-    </div>
+    </Container>
   );
 };
 /**
@@ -37,7 +47,17 @@ export const AuthenticatedApp = () => {
  * 从内容出发：有一组内容不固定数量，希望均匀分布在容器中，内容大小决定占据大小-》flex
  * 从布局出发：先规划网格数量比较固定，再填充元素-》grid
  */
-const Header = styled(Row)``;
+const Container = styled.div`
+  display: grid;
+  grid-template-rows: 6rem 1fr;
+  height: 100vh;
+`;
+
+const Header = styled(Row)`
+  padding: 3.2rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+  z-index: 1;
+`;
 const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 
