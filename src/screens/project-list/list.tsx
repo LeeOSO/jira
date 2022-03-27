@@ -1,9 +1,9 @@
-import { Table } from "antd";
 import React from "react";
 import { User } from "./search-panel";
 import dayjs from "dayjs";
+import { Table, TableProps } from "antd";
 
-interface Project {
+export interface Project {
   id: string;
   name: string;
   personId: string;
@@ -12,14 +12,19 @@ interface Project {
   created: number;
 }
 
-interface ListProps {
-  list: Project[];
+interface ListProps extends TableProps<Project> {
+  // list: Project[];
   users: User[];
 }
 
-export const List = ({ list, users }: ListProps) => {
+//loading处理：通过父组件透传属性到子组件的Table中
+//取出users
+//...props对象类型: type PropsType = Omit<ListProps, 'users'>;
+export const List = ({ users, ...props }: ListProps) => {
+  // let object = { name: "jack", age: 3 };
   return (
     <Table
+      //{/*{...object} === name={'jack'} age={8}*/}
       pagination={false}
       columns={[
         {
@@ -55,7 +60,7 @@ export const List = ({ list, users }: ListProps) => {
           },
         },
       ]}
-      dataSource={list}
+      {...props}
     />
   );
 };
