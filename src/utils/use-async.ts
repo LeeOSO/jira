@@ -12,8 +12,16 @@ const defaultState: State<null> = {
   error: null,
 };
 
+const defaultConfig = {
+  throwOnError: false,
+};
+
 //, 泛型的语法与 JSX 的语法冲突
-export const useAsync = <D>(initialState?: State<D>) => {
+export const useAsync = <D>(
+  initialState?: State<D>,
+  initialConfig?: typeof defaultConfig
+) => {
+  const defConfig = { ...defaultConfig, ...initialConfig };
   const [state, setState] = useState<State<D>>({
     ...defaultState,
     ...initialState,
@@ -21,6 +29,7 @@ export const useAsync = <D>(initialState?: State<D>) => {
 
   const setData = (data: D) =>
     setState({
+      //异步函数，不能同步执行获取对应结果
       data,
       status: "success",
       error: null,
@@ -44,8 +53,13 @@ export const useAsync = <D>(initialState?: State<D>) => {
         return data;
       })
       .catch((error) => {
-        setError(error);
-        return error;
+        //catch之后异常不再抛出，需要手动抛出
+        setError(error); //异步设置Error
+        if (defConfig.throwOnError) {
+          return Promise.reject(error);
+        } else {
+          return error;
+        }
       });
   };
 

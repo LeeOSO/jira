@@ -2,12 +2,19 @@ import { Button, Form, Input } from "antd";
 import React, { FormEvent } from "react";
 import { LongButton } from "unauthenticated-app";
 import { useAuth } from "../context/auth-context";
-
-export const LoginScreen = () => {
+import { useAsync } from "../utils/use-async";
+//鸭子类型"面向接口编程而不是面向对象类型。只要类型匹配就可以
+export const LoginScreen = ({
+  onError,
+}: {
+  onError: (error: Error) => void;
+}) => {
   const { login, user } = useAuth();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
   const handleSubmit = (values: { username: string; password: string }) => {
-    //鸭子类型"面向接口编程而不是面向对象类型。只要类型匹配就可以
-    login(values);
+    run(login(values)).catch((error) => {
+      onError(error);
+    });
   };
 
   return (
@@ -25,7 +32,7 @@ export const LoginScreen = () => {
         <Input type={"password"} id={"password"} />
       </Form.Item>
       <Form.Item>
-        <LongButton htmlType={"submit"} type={"primary"}>
+        <LongButton loading={isLoading} htmlType={"submit"} type={"primary"}>
           登录
         </LongButton>
       </Form.Item>
