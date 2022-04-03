@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { SearchPanel } from "./search-panel";
 import { List, Project } from "./list";
-import { cleanObject, useDebounce, useMount } from "../../utils";
+import {
+  cleanObject,
+  useDebounce,
+  useDocumentTitle,
+  useMount,
+} from "../../utils";
 import qs from "qs";
 import { useHttp } from "../../utils/http";
 import styled from "@emotion/styled";
@@ -46,6 +51,8 @@ export const ProjectListScreen = () => {
   // 使用自定义Hook封装异步操作
   const { error, isLoading: loading, data: list } = useProjects(debounceParam);
   const { data: users } = useUser(debounceParam);
+
+  useDocumentTitle("项目列表", false);
   return (
     <Container>
       <h2>项目列表</h2>

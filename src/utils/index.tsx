@@ -38,3 +38,21 @@ export const useDebounce = <V,>(value: V, delay?: number) => {
   }, [value, delay]); //每次在value变化后设置定时器
   return debounceValue;
 };
+
+export const useDocumentTitle = (
+  title: string,
+  keepOnUnmount: boolean = true
+) => {
+  const oldTitle = document.title;
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => {
+    return () => {
+      if (!keepOnUnmount) {
+        document.title = oldTitle;
+      }
+    };
+  }, []);
+};
