@@ -5,41 +5,60 @@ import styled from "@emotion/styled";
 import { Row } from "./components/lib";
 import { ReactComponent } from "./assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
+import { Route, Routes } from "react-router";
+import { ProjectScreen } from "./screens/project";
+import { BrowserRouter as Router } from "react-router-dom";
 
 export const AuthenticatedApp = () => {
-  const { logout, user } = useAuth();
   return (
     <Container>
-      <Header between={true}>
-        <HeaderLeft gap={true}>
-          <ReactComponent width={"18rem"} color={"rgb(38, 132, 255)"} />
-          <h2>2</h2>
-          <h2>3</h2>
-        </HeaderLeft>
-        <HeaderRight>
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item key={"logout"}>
-                  <Button type={"link"} onClick={logout}>
-                    登出
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <Button type={"link"} onClick={(e) => e.preventDefault()}>
-              HI, {user?.name}
-            </Button>
-          </Dropdown>
-        </HeaderRight>
-      </Header>
+      <PageHeader />
       <Main>
-        <ProjectListScreen />
+        {/*context 共享数据时设置Router */}
+        <Router>
+          <Routes>
+            <Route path={"/projects"} element={<ProjectListScreen />} />
+            <Route
+              path={"/projects/:projectId/*"}
+              element={<ProjectScreen />}
+            />
+          </Routes>
+        </Router>
       </Main>
     </Container>
   );
 };
+
+const PageHeader = () => {
+  const { logout, user } = useAuth();
+  return (
+    <Header between={true}>
+      <HeaderLeft gap={true}>
+        <ReactComponent width={"18rem"} color={"rgb(38, 132, 255)"} />
+        <h2>2</h2>
+        <h2>3</h2>
+      </HeaderLeft>
+      <HeaderRight>
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key={"logout"}>
+                <Button type={"link"} onClick={logout}>
+                  登出
+                </Button>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Button type={"link"} onClick={(e) => e.preventDefault()}>
+            HI, {user?.name}
+          </Button>
+        </Dropdown>
+      </HeaderRight>
+    </Header>
+  );
+};
+
 /**
  * Grid和Flex应用场景：
  * 1、一维布局用flex，二维布局用grid
