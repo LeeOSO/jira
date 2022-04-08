@@ -35,7 +35,7 @@ export const useDebounce = <V,>(value: V, delay?: number) => {
       setDebounceValue(value);
     }, delay);
     return () => clearTimeout(timeout); //每次在上一个useEffect处理完后再运行
-  }, [value, delay]); //每次在value变化后设置定时器
+  }, [value, delay]); //每次在value变化后设置定时器 //存在无限渲染问题：render触发后，如果value是对象则一直会变化导致循环渲染问题，如果value是state对象不会循环渲染
   return debounceValue;
 };
 

@@ -14,16 +14,20 @@ import { Typography } from "antd";
 import { useAsync } from "../../utils/use-async";
 import { useProjects } from "../../utils/project";
 import { useUser } from "../../utils/user";
+import { useUrlQueryParam } from "../../utils/url";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
 export const ProjectListScreen = () => {
   // const [users, setUsers] = useState([]);
 
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  // const [, setParam] = useState({
+  //   name: "",
+  //   personId: "",
+  // });
+  // const [keys] = useState<('name'|'personId')[]>(['name', 'personId']);
+  // 基本类型、组件状态可以放到依赖中。非组件状态对象不能放到依赖。
+  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
 
   // const [list, setList] = useState([]);
   // const [loading, setLoading] = useState(false);
@@ -64,6 +68,8 @@ export const ProjectListScreen = () => {
     </Container>
   );
 };
+
+ProjectListScreen.whyDidYouRender = false;
 
 const Container = styled.div`
   padding: 3.2rem;

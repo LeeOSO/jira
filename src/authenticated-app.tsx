@@ -37,7 +37,6 @@ const PageHeader = () => {
     <Header between={true}>
       <HeaderLeft gap={true}>
         <Button onClick={resetRoute}>
-          {" "}
           <ReactComponent width={"18rem"} color={"rgb(38, 132, 255)"} />
         </Button>
         <h2>2</h2>
