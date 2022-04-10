@@ -1,6 +1,7 @@
 import qs from "qs";
 import * as auth from "auth-provider";
 import { useAuth } from "../context/auth-context";
+import { useCallback } from "react";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
@@ -50,8 +51,11 @@ export const useHttp = () => {
   // typeof: ts中静态，js中动态。 typeof 操作符可以用来获取一个变量或对象的类型。
   // utility type: 用泛型给他传入一个其他类型，然后utility type对这个类型进行某种操作
   // Parameters 类型别名
-  return (...[endpoint, config]: Parameters<typeof http>) =>
-    http(endpoint, { ...config, token: user?.token });
+  return useCallback(
+    (...[endpoint, config]: Parameters<typeof http>) =>
+      http(endpoint, { ...config, token: user?.token }),
+    [user?.token]
+  );
 };
 //联合类型
 let data: string | number;
@@ -64,6 +68,7 @@ let data2: dataType;
 interface Person {
   name: string;
 }
+
 type Person2 = { name: string };
 const xx: Person = { name: "x" };
 const xxPerson: Person2 = { name: "s" };
