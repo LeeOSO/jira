@@ -26,8 +26,9 @@ export const IdSelect = (props: IdSelectProps) => {
   const { value, onChange, defaultOptionName, options, ...restProps } = props;
   return (
     <Select
-      value={toNumber(value)}
-      onChange={(value) => toNumber(value) || undefined}
+      // value:当options未加载出来时，设置默认值为0匹配'负责人'选项
+      value={options?.length ? toNumber(value) : 0}
+      onChange={(value) => onChange(toNumber(value) || undefined)}
       {...restProps}
     >
       {defaultOptionName ? (

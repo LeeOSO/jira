@@ -5,9 +5,9 @@ import { Table, TableProps } from "antd";
 import { Link } from "react-router-dom";
 
 export interface Project {
-  id: string;
+  id: number;
   name: string;
-  personId: string;
+  personId: number;
   pin: boolean;
   organization: string;
   created: number;
@@ -32,7 +32,11 @@ export const List = ({ users, ...props }: ListProps) => {
           title: "名称",
           sorter: (a, b) => a.name.localeCompare(b.name),
           render(value, project) {
-            return <Link to={String(project.id)}>{project.name}</Link>;
+            return (
+              <Link key={project.id} to={String(project.id)}>
+                {project.name}
+              </Link>
+            );
           },
         },
         {

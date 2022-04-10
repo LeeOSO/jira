@@ -15,6 +15,7 @@ import { useAsync } from "../../utils/use-async";
 import { useProjects } from "../../utils/project";
 import { useUser } from "../../utils/user";
 import { useUrlQueryParam } from "../../utils/url";
+import { useProjectsSearchParams } from "./util";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
@@ -27,12 +28,15 @@ export const ProjectListScreen = () => {
   // });
   // const [keys] = useState<('name'|'personId')[]>(['name', 'personId']);
   // 基本类型、组件状态可以放到依赖中。非组件状态对象不能放到依赖。
-  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
+  // const [param, setParam] = useUrlQueryParam(["name", "personId"]);
 
   // const [list, setList] = useState([]);
   // const [loading, setLoading] = useState(false);
   // const [error, setError] = useState<Error | null>(null);
 
+  // param中的personId从URL获取的都是string需要转换类型
+  // const projectsParam = { ...param, personId: Number(param.personId) || undefined };
+  const [param, setParam] = useProjectsSearchParams();
   const debounceParam = useDebounce(param, 500);
   // const client = useHttp();
 
@@ -69,7 +73,7 @@ export const ProjectListScreen = () => {
   );
 };
 
-ProjectListScreen.whyDidYouRender = false;
+ProjectListScreen.whyDidYouRender = true;
 
 const Container = styled.div`
   padding: 3.2rem;
