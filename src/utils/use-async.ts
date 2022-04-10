@@ -27,6 +27,10 @@ export const useAsync = <D>(
     ...initialState,
   });
 
+  //useState传入函数，认为是惰性初始化state。不认为是保存函数。
+  //传入函数的函数，使保存的state是函数类型
+  const [retry, setRetry] = useState(() => () => {});
+
   const setData = (data: D) =>
     setState({
       //异步函数，不能同步执行获取对应结果
@@ -42,10 +46,18 @@ export const useAsync = <D>(
       data: null,
     });
 
-  const run = (promise: Promise<D>) => {
+  const run = (
+    promise: Promise<D>,
+    runConfig?: { retry: () => Promise<D> }
+  ) => {
     if (!promise || !promise.then) {
       throw new Error("Promise type error.");
     }
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig);
+      }
+    });
     setState({ ...state, status: "loading" });
     return promise
       .then((data) => {
@@ -63,6 +75,10 @@ export const useAsync = <D>(
       });
   };
 
+  // const retry = ()=>{
+  //
+  // }
+
   return {
     isIdle: state.status === "idle",
     isLoading: state.status === "loading",
@@ -70,6 +86,8 @@ export const useAsync = <D>(
     isSuccess: state.status === "success",
     setData,
     setError,
+    // retry 被调用时重新执行run，state刷新
+    retry,
     run,
     ...state,
   };

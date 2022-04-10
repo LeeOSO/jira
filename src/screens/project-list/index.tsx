@@ -57,7 +57,12 @@ export const ProjectListScreen = () => {
   // });
 
   // 使用自定义Hook封装异步操作
-  const { error, isLoading: loading, data: list } = useProjects(debounceParam);
+  const {
+    error,
+    isLoading: loading,
+    data: list,
+    retry,
+  } = useProjects(debounceParam);
   const { data: users } = useUser(debounceParam);
 
   useDocumentTitle("项目列表", false);
@@ -68,7 +73,12 @@ export const ProjectListScreen = () => {
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List dataSource={list || []} users={users || []} loading={loading} />
+      <List
+        refresh={retry}
+        dataSource={list || []}
+        users={users || []}
+        loading={loading}
+      />
     </Container>
   );
 };
