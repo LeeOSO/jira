@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMountedRef } from "./index";
 
 interface State<D> {
   error: Error | null;
@@ -26,7 +27,7 @@ export const useAsync = <D>(
     ...defaultState,
     ...initialState,
   });
-
+  const mountedRef = useMountedRef();
   //useState传入函数，认为是惰性初始化state。不认为是保存函数。
   //传入函数的函数，使保存的state是函数类型
   const [retry, setRetry] = useState(() => () => {});
@@ -61,7 +62,8 @@ export const useAsync = <D>(
     setState({ ...state, status: "loading" });
     return promise
       .then((data) => {
-        setData(data);
+        //防止组件卸载时，仍然修改状态
+        if (mountedRef) setData(data);
         return data;
       })
       .catch((error) => {
