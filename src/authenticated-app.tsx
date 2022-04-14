@@ -1,24 +1,33 @@
 import { useAuth } from "./context/auth-context";
-import React from "react";
+import React, { useState } from "react";
 import { ProjectListScreen } from "./screens/project-list";
 import styled from "@emotion/styled";
-import { Row } from "./components/lib";
+import { ButtonNoPadding, Row } from "./components/lib";
 import { ReactComponent } from "./assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
 import { Navigate, Route, Routes } from "react-router";
 import { ProjectScreen } from "./screens/project";
 import { BrowserRouter as Router } from "react-router-dom";
 import { resetRoute } from "./utils";
+import { ProjectModal } from "./screens/project-list/project-modal";
+import { ProjectPopover } from "./components/Project-popover";
 
 export const AuthenticatedApp = () => {
+  //Container：这里未报错是因为这里只是函数体并未执行。如果执行则会报错。
+  const [projectModalOpen, setProjectModalOpen] = useState(false); // prop drilling
   return (
     <Container>
-      <PageHeader />
+      <PageHeader setProjectModalOpen={setProjectModalOpen} />
       <Main>
         {/*context 共享数据时设置Router */}
         <Router>
           <Routes>
-            <Route path={"/projects"} element={<ProjectListScreen />} />
+            <Route
+              path={"/projects"}
+              element={
+                <ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
+              }
+            />
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
@@ -27,39 +36,51 @@ export const AuthenticatedApp = () => {
           </Routes>
         </Router>
       </Main>
+      <ProjectModal
+        onClose={() => setProjectModalOpen(false)}
+        projectModalOpen={projectModalOpen}
+      />
     </Container>
   );
 };
 
-const PageHeader = () => {
-  const { logout, user } = useAuth();
+const PageHeader = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <Button onClick={resetRoute}>
+        <ButtonNoPadding onClick={resetRoute}>
           <ReactComponent width={"18rem"} color={"rgb(38, 132, 255)"} />
-        </Button>
-        <h2>2</h2>
-        <h2>3</h2>
+        </ButtonNoPadding>
+        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
+        <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item key={"logout"}>
-                <Button type={"link"} onClick={logout}>
-                  登出
-                </Button>
-              </Menu.Item>
-            </Menu>
-          }
-        >
-          <Button type={"link"} onClick={(e) => e.preventDefault()}>
-            HI, {user?.name}
-          </Button>
-        </Dropdown>
+        <User />
       </HeaderRight>
     </Header>
+  );
+};
+
+const User = () => {
+  const { logout, user } = useAuth();
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={"logout"}>
+            <Button type={"link"} onClick={logout}>
+              登出
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <Button type={"link"} onClick={(e) => e.preventDefault()}>
+        HI, {user?.name}
+      </Button>
+    </Dropdown>
   );
 };
 
@@ -70,6 +91,7 @@ const PageHeader = () => {
  * 从内容出发：有一组内容不固定数量，希望均匀分布在容器中，内容大小决定占据大小-》flex
  * 从布局出发：先规划网格数量比较固定，再填充元素-》grid
  */
+///// Container位于暂时性死区，Container申明之前的访问都会报错。
 const Container = styled.div`
   display: grid;
   grid-template-rows: 6rem 1fr;

@@ -10,16 +10,19 @@ import {
 import qs from "qs";
 import { useHttp } from "../../utils/http";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useAsync } from "../../utils/use-async";
 import { useProjects } from "../../utils/project";
 import { useUser } from "../../utils/user";
 import { useUrlQueryParam } from "../../utils/url";
 import { useProjectsSearchParams } from "./util";
+import { Row } from "../../components/lib";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   // const [users, setUsers] = useState([]);
 
   // const [, setParam] = useState({
@@ -68,12 +71,18 @@ export const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
   return (
     <Container>
-      <h2>项目列表</h2>
+      <Row between={true}>
+        <h2>项目列表</h2>
+        <Button type={"link"} onClick={() => props.setProjectModalOpen(true)}>
+          创建项目
+        </Button>
+      </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
+        setProjectModalOpen={props.setProjectModalOpen}
         refresh={retry}
         dataSource={list || []}
         users={users || []}
