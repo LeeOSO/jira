@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useState } from "react";
 import { useMountedRef } from "./index";
 
 interface State<D> {
@@ -17,53 +17,40 @@ const defaultConfig = {
   throwOnError: false,
 };
 
-const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
-  const mountedRef = useMountedRef();
-  return useCallback(
-    (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
-    [dispatch, mountedRef]
-  );
-};
-
 //, 泛型的语法与 JSX 的语法冲突
 export const useAsync = <D>(
   initialState?: State<D>,
   initialConfig?: typeof defaultConfig
 ) => {
   const defConfig = { ...defaultConfig, ...initialConfig };
-  // 使用useReducer改写状态变化
-  const [state, dispatch] = useReducer(
-    (state: State<D>, action: Partial<State<D>>) => ({ ...state, ...action }),
-    {
-      ...defaultState,
-      ...initialState,
-    }
-  );
-
-  const safeDispatch = useSafeDispatch(dispatch);
+  const [state, setState] = useState<State<D>>({
+    ...defaultState,
+    ...initialState,
+  });
+  const mountedRef = useMountedRef();
   //useState传入函数，认为是惰性初始化state。不认为是保存函数。
   //传入函数的函数，使保存的state是函数类型
   const [retry, setRetry] = useState(() => () => {});
 
   const setData = useCallback(
     (data: D) =>
-      safeDispatch({
+      setState({
         //异步函数，不能同步执行获取对应结果
         data,
         status: "success",
         error: null,
       }),
-    [safeDispatch]
+    []
   );
 
   const setError = useCallback(
     (error: Error) =>
-      safeDispatch({
+      setState({
         error,
         status: "error",
         data: null,
       }),
-    [safeDispatch]
+    []
   );
 
   // useCallback useMemo使用时机：
@@ -82,10 +69,11 @@ export const useAsync = <D>(
       // useCallback中直接调用setSate会使用其他值覆盖修改state变量，导致依赖改变循环调用的问题。
       // setState({ ...state, status: "loading" });
       // 解决方式：使用异步方式修改state变量，useCallback移除依赖state
-      safeDispatch({ status: "loading" });
+      setState((prevState) => ({ ...prevState, status: "loading" }));
       return promise
         .then((data) => {
-          setData(data);
+          //防止组件卸载时，仍然修改状态
+          if (mountedRef) setData(data);
           return data;
         })
         .catch((error) => {
@@ -98,7 +86,7 @@ export const useAsync = <D>(
           }
         });
     },
-    [defConfig.throwOnError, setData, setError, safeDispatch]
+    [defConfig.throwOnError, mountedRef, setData, setError]
   );
 
   return {
