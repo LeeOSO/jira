@@ -17,12 +17,12 @@ import { useUser } from "../../utils/user";
 import { useUrlQueryParam } from "../../utils/url";
 import { useProjectsSearchParams } from "./util";
 import { Row } from "../../components/lib";
+import { useDispatch } from "react-redux";
+import { projectListActions } from "./project-list_slice";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
-export const ProjectListScreen = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+export const ProjectListScreen = () => {
   // const [users, setUsers] = useState([]);
 
   // const [, setParam] = useState({
@@ -69,11 +69,15 @@ export const ProjectListScreen = (props: {
   const { data: users } = useUser(debounceParam);
 
   useDocumentTitle("项目列表", false);
+  const dispatch = useDispatch();
   return (
     <Container>
       <Row between={true}>
         <h2>项目列表</h2>
-        <Button type={"link"} onClick={() => props.setProjectModalOpen(true)}>
+        <Button
+          type={"link"}
+          onClick={() => dispatch(projectListActions.openProjectModal())}
+        >
           创建项目
         </Button>
       </Row>
@@ -82,7 +86,6 @@ export const ProjectListScreen = (props: {
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
-        setProjectModalOpen={props.setProjectModalOpen}
         refresh={retry}
         dataSource={list || []}
         users={users || []}

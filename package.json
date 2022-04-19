@@ -8,6 +8,7 @@
     "@craco/craco": "^6.4.3",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -24,6 +25,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.34.16",
+    "react-redux": "^8.0.0",
     "react-router": "6",
     "react-router-dom": "6",
     "react-scripts": "5.0.0",
@@ -58,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-redux": "^7.1.24",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "husky": "^7.0.4",
     "lint-staged": ">=10",

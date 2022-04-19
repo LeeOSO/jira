@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { Pin } from "../../components/pin";
 import { useEditProject } from "../../utils/project";
 import { ButtonNoPadding } from "../../components/lib";
+import { useDispatch } from "react-redux";
+import { projectListActions } from "./project-list_slice";
 
 export interface Project {
   id: number;
@@ -20,7 +22,6 @@ interface ListProps extends TableProps<Project> {
   // list: Project[];
   users: User[];
   refresh?: () => void;
-  setProjectModalOpen: (isOpen: boolean) => void;
 }
 
 //loading处理：通过父组件透传属性到子组件的Table中
@@ -37,6 +38,7 @@ export const List = ({ users, ...props }: ListProps) => {
         props.refresh();
       }
     });
+  const dispatch = useDispatch();
   return (
     <Table
       //{/*{...object} === name={'jack'} age={8}*/}
@@ -101,7 +103,9 @@ export const List = ({ users, ...props }: ListProps) => {
                     <Menu.Item key={"edit"}>
                       <ButtonNoPadding
                         type={"link"}
-                        onClick={() => props.setProjectModalOpen(true)}
+                        onClick={() =>
+                          dispatch(projectListActions.openProjectModal())
+                        }
                       >
                         编辑
                       </ButtonNoPadding>
