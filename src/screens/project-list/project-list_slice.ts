@@ -24,5 +24,6 @@ export const projectListSlice = createSlice({
 });
 
 export const projectListActions = projectListSlice.actions;
+// 注意：此处用法 state.projectList原理
 export const selectProjectModalOpen = (state: RootState) =>
   state.projectList.projectModalOpen;
