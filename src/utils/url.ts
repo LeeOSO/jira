@@ -17,7 +17,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       // iterator: 可以使用for/of遍历
       // Object.fromEntries(searchParams): 读取searchParams的iterator转换为普通对象
       const obj = cleanObject({
-        ...Object.fromEntries(searchParams),
+        ...Object.fromEntries(searchParams), //todo: 闭包影响searchParams
         ...params,
       }) as URLSearchParamsInit;
       return setSearchParams(obj);

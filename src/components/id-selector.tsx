@@ -7,8 +7,8 @@ type SelectProps = React.ComponentProps<typeof Select>; //获取Select所有的P
 interface IdSelectProps
   extends Omit<SelectProps, "value" | "onChange" | "options"> {
   //继承组件所有Props类型并移除同名类型
-  value: Raw | null | undefined;
-  onChange: (value?: number) => void;
+  value?: Raw | null | undefined;
+  onChange?: (value?: number) => void;
   defaultOptionName?: string;
   options?: { name: string; id: number }[];
 }
@@ -28,7 +28,7 @@ export const IdSelect = (props: IdSelectProps) => {
     <Select
       // value:当options未加载出来时，设置默认值为0匹配'负责人'选项
       value={options?.length ? toNumber(value) : 0}
-      onChange={(value) => onChange(toNumber(value) || undefined)}
+      onChange={(value) => onChange?.(toNumber(value) || undefined)}
       {...restProps}
     >
       {defaultOptionName ? (

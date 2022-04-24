@@ -3,11 +3,10 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "../../utils";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
 import { useProjects } from "../../utils/project";
 import { useUser } from "../../utils/user";
 import { useProjectModal, useProjectsSearchParams } from "./util";
-import { ButtonNoPadding, Row } from "../../components/lib";
+import { ButtonNoPadding, ErrorBox, Row } from "../../components/lib";
 
 // const apiURL = process.env.REACT_APP_API_URL;
 
@@ -49,13 +48,8 @@ export const ProjectListScreen = () => {
   // });
 
   // 使用自定义Hook封装异步操作
-  const {
-    error,
-    isLoading: loading,
-    data: list,
-    retry,
-  } = useProjects(debounceParam);
-  const { data: users } = useUser(debounceParam);
+  const { error, isLoading: loading, data: list } = useProjects(debounceParam);
+  const { data: users } = useUser();
   const { open } = useProjectModal();
   useDocumentTitle("项目列表", false);
   return (
@@ -67,16 +61,8 @@ export const ProjectListScreen = () => {
         </ButtonNoPadding>
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
-      {error ? (
-        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
-      ) : null}
-      <List
-        setProjectModalOpen={open}
-        refresh={retry}
-        dataSource={list || []}
-        users={users || []}
-        loading={loading}
-      />
+      <ErrorBox error={error} />
+      <List dataSource={list || []} users={users || []} loading={loading} />
     </Container>
   );
 };

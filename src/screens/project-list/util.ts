@@ -1,5 +1,6 @@
 import { useUrlQueryParam } from "../../utils/url";
 import { useMemo } from "react";
+import { useProject } from "../../utils/project";
 
 export const useProjectsSearchParams = () => {
   const [param, setParam] = useUrlQueryParam(["name", "personId"]);
@@ -19,12 +20,30 @@ export const useProjectModal = () => {
     "projectCreate",
   ]);
 
+  const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
+    "editingProjectId",
+  ]);
+  const { data: editingProject, isLoading } = useProject(
+    Number(editingProjectId)
+  );
+
   const open = () => setProjectCreate({ projectCreate: true });
-  const close = () => setProjectCreate({ projectCreate: undefined }); //undefined则不在URL中展示
+
+  const close = () => {
+    setEditingProjectId({ editingProjectId: undefined });
+    setProjectCreate({ projectCreate: undefined });
+  }; //undefined则不在URL中展示
+
+  const startEdit = (id: number) =>
+    setEditingProjectId({ editingProjectId: id });
+
   return {
-    projectModalOpen: projectCreate === "true",
+    projectModalOpen: projectCreate === "true" || Boolean(editingProjectId),
     open,
     close,
+    startEdit,
+    editingProject,
+    isLoading,
   };
   // 三个以上返回参数使用对象，否则使用下面方式。
   // return [

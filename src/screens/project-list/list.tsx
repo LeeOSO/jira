@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Pin } from "../../components/pin";
 import { useEditProject } from "../../utils/project";
 import { ButtonNoPadding } from "../../components/lib";
+import { useProjectModal } from "./util";
 
 export interface Project {
   id: number;
@@ -19,8 +20,6 @@ export interface Project {
 interface ListProps extends TableProps<Project> {
   // list: Project[];
   users: User[];
-  refresh?: () => void;
-  setProjectModalOpen: (isOpen: boolean) => void;
 }
 
 //loading处理：通过父组件透传属性到子组件的Table中
@@ -29,14 +28,11 @@ interface ListProps extends TableProps<Project> {
 export const List = ({ users, ...props }: ListProps) => {
   // let object = { name: "jack", age: 3 };
   const { mutate } = useEditProject();
+  const { startEdit } = useProjectModal();
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin });
   // 柯里化简化调用
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(() => {
-      if (props.refresh) {
-        props.refresh();
-      }
-    });
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const editProject = (id: number) => () => startEdit(id);
   return (
     <Table
       //{/*{...object} === name={'jack'} age={8}*/}
@@ -101,9 +97,17 @@ export const List = ({ users, ...props }: ListProps) => {
                     <Menu.Item key={"edit"}>
                       <ButtonNoPadding
                         type={"link"}
-                        onClick={() => props.setProjectModalOpen(true)}
+                        onClick={editProject(project.id)}
                       >
                         编辑
+                      </ButtonNoPadding>
+                    </Menu.Item>
+                    <Menu.Item key={"delete"}>
+                      <ButtonNoPadding
+                        type={"link"}
+                        // onClick={editProject(project.id)}
+                      >
+                        删除
                       </ButtonNoPadding>
                     </Menu.Item>
                   </Menu>

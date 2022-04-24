@@ -1,43 +1,41 @@
 import { Project } from "../screens/project-list/list";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";
-import { useCallback, useEffect } from "react";
-import { cleanObject } from "./index";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
-  const { run, ...result } = useAsync<Project[]>();
-  const fetchProjects = useCallback(
-    () => client("projects", { data: cleanObject(param || {}) }),
-    [param, client]
+  return useQuery<Project[]>(["projects", param], () =>
+    client("projects", { data: param })
   );
-
-  useEffect(() => {
-    run(fetchProjects(), { retry: fetchProjects });
-  }, [param, run, fetchProjects]);
-  return result;
 };
 
 export const useEditProject = () => {
   const client = useHttp();
-  const { run, ...asyncResult } = useAsync();
-  // 由业务逻辑调用，执行具体逻辑。
-  // 业务逻辑不能直接调用Hook函数。
-  const mutate = (param: Partial<Project>) => {
-    return run(
-      client(`projects/${param.id}`, { data: param, method: "PATCH" })
-    );
-  };
-  return { mutate, ...asyncResult };
+  const queryClient = useQueryClient();
+  return useMutation(
+    (params: Partial<Project>) =>
+      client(`projects/${params.id}`, {
+        method: "PATCH",
+        data: params,
+      }),
+    { onSuccess: () => queryClient.invalidateQueries("projects") }
+  ); //onSuccess回到之后刷新数据
 };
 
 export const useAddProject = () => {
   const client = useHttp();
-  const { run, ...asyncResult } = useAsync();
-  // 由业务逻辑调用，执行具体逻辑。
-  // 业务逻辑不能直接调用Hook函数。
-  const mutate = (param: Partial<Project>) => {
-    return run(client(`projects/${param.id}`, { data: param, method: "POST" }));
-  };
-  return { mutate, ...asyncResult };
+  const queryClient = useQueryClient();
+  return useMutation(
+    (param: Partial<Project>) =>
+      client(`projects/`, { data: param, method: "POST" }),
+    { onSuccess: () => queryClient.invalidateQueries("projects") }
+  );
+};
+
+export const useProject = (id?: number) => {
+  const client = useHttp();
+  return useQuery(["project", { id }], () => client(`projects/${id}`), {
+    enabled: !!id, //只有id存在时才请求
+  });
 };

@@ -9,6 +9,6 @@ export const useUser = (param?: Partial<User>) => {
 
   useEffect(() => {
     run(client("users"));
-  }, [param]);
+  }, [client, param, run]);
   return result;
 };
