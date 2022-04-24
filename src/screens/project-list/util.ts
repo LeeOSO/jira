@@ -13,3 +13,23 @@ export const useProjectsSearchParams = () => {
     setParam,
   ] as const;
 };
+
+export const useProjectModal = () => {
+  const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
+    "projectCreate",
+  ]);
+
+  const open = () => setProjectCreate({ projectCreate: true });
+  const close = () => setProjectCreate({ projectCreate: undefined }); //undefined则不在URL中展示
+  return {
+    projectModalOpen: projectCreate === "true",
+    open,
+    close,
+  };
+  // 三个以上返回参数使用对象，否则使用下面方式。
+  // return [
+  //   projectCreate === "true",
+  //   open,
+  //   close
+  // ] as const;
+};

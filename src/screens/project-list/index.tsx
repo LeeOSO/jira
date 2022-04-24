@@ -1,28 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SearchPanel } from "./search-panel";
-import { List, Project } from "./list";
-import {
-  cleanObject,
-  useDebounce,
-  useDocumentTitle,
-  useMount,
-} from "../../utils";
-import qs from "qs";
-import { useHttp } from "../../utils/http";
+import { List } from "./list";
+import { useDebounce, useDocumentTitle } from "../../utils";
 import styled from "@emotion/styled";
-import { Button, Typography } from "antd";
-import { useAsync } from "../../utils/use-async";
+import { Typography } from "antd";
 import { useProjects } from "../../utils/project";
 import { useUser } from "../../utils/user";
-import { useUrlQueryParam } from "../../utils/url";
-import { useProjectsSearchParams } from "./util";
-import { Row } from "../../components/lib";
+import { useProjectModal, useProjectsSearchParams } from "./util";
+import { ButtonNoPadding, Row } from "../../components/lib";
 
-const apiURL = process.env.REACT_APP_API_URL;
+// const apiURL = process.env.REACT_APP_API_URL;
 
-export const ProjectListScreen = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+export const ProjectListScreen = () => {
   // const [users, setUsers] = useState([]);
 
   // const [, setParam] = useState({
@@ -67,22 +56,22 @@ export const ProjectListScreen = (props: {
     retry,
   } = useProjects(debounceParam);
   const { data: users } = useUser(debounceParam);
-
+  const { open } = useProjectModal();
   useDocumentTitle("项目列表", false);
   return (
     <Container>
       <Row between={true}>
         <h2>项目列表</h2>
-        <Button type={"link"} onClick={() => props.setProjectModalOpen(true)}>
+        <ButtonNoPadding type={"link"} onClick={open}>
           创建项目
-        </Button>
+        </ButtonNoPadding>
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
-        setProjectModalOpen={props.setProjectModalOpen}
+        setProjectModalOpen={open}
         refresh={retry}
         dataSource={list || []}
         users={users || []}
