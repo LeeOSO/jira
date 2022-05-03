@@ -1,10 +1,10 @@
 import { Project } from "../screens/project-list/list";
 import { useHttp } from "./http";
-import { useAsync } from "./use-async";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
+  // useQuery根据key变换可以重新触发
   return useQuery<Project[]>(["projects", param], () =>
     client("projects", { data: param })
   );
@@ -13,6 +13,10 @@ export const useProjects = (param?: Partial<Project>) => {
 export const useEditProject = () => {
   const client = useHttp();
   const queryClient = useQueryClient();
+  // invalidateQueries 清除缓存数据
+  // useQuery 请求数据并缓存
+  // getQueryData 获取缓存数据
+  // useMutation 用于创建/更新/删除数据或执行服务器命令，mutate对象用于执行修改
   return useMutation(
     (params: Partial<Project>) =>
       client(`projects/${params.id}`, {
@@ -20,7 +24,7 @@ export const useEditProject = () => {
         data: params,
       }),
     { onSuccess: () => queryClient.invalidateQueries("projects") }
-  ); //onSuccess回到之后刷新数据
+  ); //onSuccess之后刷新数据
 };
 
 export const useAddProject = () => {

@@ -19,7 +19,7 @@ export const ProjectPopover = () => {
           </List.Item>
         ))}
       </List>
-      <ButtonNoPadding type={"link"} onClick={open}>
+      <ButtonNoPadding type={"link"} onClick={() => open()}>
         创建项目
       </ButtonNoPadding>
     </ContentContainer>

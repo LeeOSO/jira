@@ -49,6 +49,7 @@ export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
 //类型守卫：当返回值为true时认为是Error类型
 const isError = (value: any): value is Error => value?.message;
 
+//抽象组件：可以处理任意类型ERROR
 export const ErrorBox = ({ error }: { error: unknown }) => {
   if (isError(error)) {
     return <Typography.Text type={"danger"}>{error?.message}</Typography.Text>;
