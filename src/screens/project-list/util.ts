@@ -1,4 +1,4 @@
-import { useUrlQueryParam } from "../../utils/url";
+import { useSetUrlSearchParam, useUrlQueryParam } from "../../utils/url";
 import { useMemo } from "react";
 import { useProject } from "../../utils/project";
 
@@ -28,6 +28,9 @@ export const useProjectModal = () => {
   const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
     "editingProjectId",
   ]);
+
+  const setUrlParams = useSetUrlSearchParam();
+
   const { data: editingProject, isLoading } = useProject(
     Number(editingProjectId)
   );
@@ -35,8 +38,7 @@ export const useProjectModal = () => {
   const open = () => setProjectCreate({ projectCreate: true });
 
   const close = () => {
-    setEditingProjectId({ editingProjectId: undefined });
-    setProjectCreate({ projectCreate: undefined });
+    setUrlParams({ editingProjectId: "", projectCreate: "" });
   }; //undefined则不在URL中展示
 
   const startEdit = (id: number) =>
