@@ -1,6 +1,6 @@
-import { Raw } from "../utils/types";
 import { Select } from "antd";
 import React from "react";
+import { Raw } from "../types";
 
 type SelectProps = React.ComponentProps<typeof Select>; //获取Select所有的Props的类型
 

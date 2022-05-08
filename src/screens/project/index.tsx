@@ -17,7 +17,12 @@ export const ProjectScreen = () => {
         {/*设置默认路由*/}
         <Route
           path={"/*"}
-          element={<Navigate to={window.location.pathname + "/kanban"} />}
+          element={
+            <Navigate
+              to={window.location.pathname + "/kanban"}
+              replace={true}
+            />
+          } //replace={true}: 替换未匹配路由栈，back时回退到最上层
         />
       </Routes>
     </div>

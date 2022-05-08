@@ -1,16 +1,8 @@
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
 import React from "react";
-import { Project } from "./list";
 import { UserSelect } from "../../components/user-select";
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
-}
+import { Project } from "../../types/project";
+import { User } from "../../types/user";
 
 interface SearchPanelProps {
   users: User[];
@@ -22,7 +14,7 @@ interface SearchPanelProps {
   setParam: (param: SearchPanelProps["param"]) => void;
 }
 
-export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
+export const SearchPanel = ({ param, setParam }: SearchPanelProps) => {
   return (
     <Form style={{ marginBottom: "2rem" }} layout={"inline"}>
       <Form.Item>

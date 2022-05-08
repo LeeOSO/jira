@@ -1,5 +1,4 @@
 import React from "react";
-import { User } from "./search-panel";
 import dayjs from "dayjs";
 import { Dropdown, Menu, Modal, Table, TableProps } from "antd";
 import { Link } from "react-router-dom";
@@ -7,15 +6,8 @@ import { Pin } from "../../components/pin";
 import { useDeleteProject, useEditProject } from "../../utils/project";
 import { ButtonNoPadding } from "../../components/lib";
 import { useProjectModal, useProjectsQueryKey } from "./util";
-
-export interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  pin: boolean;
-  organization: string;
-  created: number;
-}
+import { Project } from "../../types/project";
+import { User } from "../../types/user";
 
 interface ListProps extends TableProps<Project> {
   // list: Project[];
@@ -35,6 +27,7 @@ export const List = ({ users, ...props }: ListProps) => {
     <Table
       //{/*{...object} === name={'jack'} age={8}*/}
       pagination={false}
+      rowKey={"id"}
       columns={[
         {
           title: <Pin checked={true} disabled={true} />,

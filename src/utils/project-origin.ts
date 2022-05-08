@@ -1,8 +1,8 @@
-import { Project } from "../screens/project-list/list";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";
 import { useCallback, useEffect } from "react";
 import { cleanObject } from "./index";
+import { Project } from "../types/project";
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
