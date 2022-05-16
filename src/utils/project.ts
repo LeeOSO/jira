@@ -51,7 +51,11 @@ export const useDeleteProject = (queryKey: QueryKey) => {
 
 export const useProject = (id?: number) => {
   const client = useHttp();
-  return useQuery(["project", { id }], () => client(`projects/${id}`), {
-    enabled: !!id, //只有id存在时才请求
-  });
+  return useQuery<Project>(
+    ["project", { id }],
+    () => client(`projects/${id}`),
+    {
+      enabled: Boolean(id), //只有id存在时才请求
+    }
+  );
 };
