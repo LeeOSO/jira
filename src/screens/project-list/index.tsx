@@ -2,11 +2,15 @@ import React from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "../../utils";
-import styled from "@emotion/styled";
 import { useProjects } from "../../utils/project";
 import { useUser } from "../../utils/user";
 import { useProjectModal, useProjectsSearchParams } from "./util";
-import { ButtonNoPadding, ErrorBox, Row } from "../../components/lib";
+import {
+  ButtonNoPadding,
+  ErrorBox,
+  Row,
+  ScreenContainer,
+} from "../../components/lib";
 
 // const apiURL = process.env.REACT_APP_API_URL;
 
@@ -53,7 +57,7 @@ export const ProjectListScreen = () => {
   const { open } = useProjectModal();
   useDocumentTitle("项目列表", false);
   return (
-    <Container>
+    <ScreenContainer>
       <Row between={true}>
         <h2>项目列表</h2>
         <ButtonNoPadding type={"link"} onClick={open}>
@@ -63,12 +67,8 @@ export const ProjectListScreen = () => {
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       <ErrorBox error={error} />
       <List dataSource={list || []} users={users || []} loading={loading} />
-    </Container>
+    </ScreenContainer>
   );
 };
 
 ProjectListScreen.whyDidYouRender = true;
-
-const Container = styled.div`
-  padding: 3.2rem;
-`;
