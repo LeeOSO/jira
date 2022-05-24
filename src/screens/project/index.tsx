@@ -59,5 +59,6 @@ const Main = styled.div`
 
 const Container = styled.div`
   display: grid;
+  width: 100%;
   grid-template-columns: 16rem 1fr;
 `;

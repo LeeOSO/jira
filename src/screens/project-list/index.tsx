@@ -3,7 +3,6 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "../../utils";
 import { useProjects } from "../../utils/project";
-import { useUser } from "../../utils/user";
 import { useProjectModal, useProjectsSearchParams } from "./util";
 import {
   ButtonNoPadding,
@@ -11,6 +10,7 @@ import {
   Row,
   ScreenContainer,
 } from "../../components/lib";
+import { useUsers } from "../../utils/user";
 
 // const apiURL = process.env.REACT_APP_API_URL;
 
@@ -53,7 +53,7 @@ export const ProjectListScreen = () => {
 
   // 使用自定义Hook封装异步操作
   const { error, isLoading: loading, data: list } = useProjects(debounceParam);
-  const { data: users } = useUser();
+  const { data: users } = useUsers();
   const { open } = useProjectModal();
   useDocumentTitle("项目列表", false);
   return (

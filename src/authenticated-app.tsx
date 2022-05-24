@@ -11,6 +11,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { resetRoute } from "./utils";
 import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/Project-popover";
+import { UserPopover } from "./components/user-popover";
 
 export const AuthenticatedApp = () => {
   //Container：这里未报错是因为这里只是函数体并未执行。如果执行则会报错。
@@ -43,7 +44,7 @@ const PageHeader = () => {
           <ReactComponent width={"18rem"} color={"rgb(38, 132, 255)"} />
         </ButtonNoPadding>
         <ProjectPopover />
-        <span>用户</span>
+        <UserPopover />
       </HeaderLeft>
       <HeaderRight>
         <User />
