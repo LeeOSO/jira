@@ -17,7 +17,10 @@ interface ListProps extends TableProps<Project> {
 //loading处理：通过父组件透传属性到子组件的Table中
 //取出users
 //...props对象类型: type PropsType = Omit<ListProps, 'users'>;
-export const List = ({ users, ...props }: ListProps) => {
+
+//性能优化2：React.memo  大部分不需要使用
+//渲染条件：props变化、redux变化
+export const List = React.memo(({ users, ...props }: ListProps) => {
   // let object = { name: "jack", age: 3 };
   const { mutate } = useEditProject(useProjectsQueryKey());
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin });
@@ -88,7 +91,7 @@ export const List = ({ users, ...props }: ListProps) => {
       {...props}
     />
   );
-};
+});
 
 const More = ({ project }: { project: Project }) => {
   const { startEdit } = useProjectModal();

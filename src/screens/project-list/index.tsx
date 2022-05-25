@@ -11,6 +11,7 @@ import {
   ScreenContainer,
 } from "../../components/lib";
 import { useUsers } from "../../utils/user";
+import { Profiler } from "../../components/profiler";
 
 // const apiURL = process.env.REACT_APP_API_URL;
 
@@ -57,17 +58,19 @@ export const ProjectListScreen = () => {
   const { open } = useProjectModal();
   useDocumentTitle("项目列表", false);
   return (
-    <ScreenContainer>
-      <Row between={true}>
-        <h2>项目列表</h2>
-        <ButtonNoPadding type={"link"} onClick={open}>
-          创建项目
-        </ButtonNoPadding>
-      </Row>
-      <SearchPanel users={users || []} param={param} setParam={setParam} />
-      <ErrorBox error={error} />
-      <List dataSource={list || []} users={users || []} loading={loading} />
-    </ScreenContainer>
+    <Profiler id={"product list"}>
+      <ScreenContainer>
+        <Row between={true}>
+          <h2>项目列表</h2>
+          <ButtonNoPadding type={"link"} onClick={open}>
+            创建项目
+          </ButtonNoPadding>
+        </Row>
+        <SearchPanel users={users || []} param={param} setParam={setParam} />
+        <ErrorBox error={error} />
+        <List dataSource={list || []} users={users || []} loading={loading} />
+      </ScreenContainer>
+    </Profiler>
   );
 };
 
