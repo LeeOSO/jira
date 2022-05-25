@@ -13,7 +13,8 @@ import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/Project-popover";
 import { UserPopover } from "./components/user-popover";
 
-export const AuthenticatedApp = () => {
+// eslint-disable-next-line import/no-anonymous-default-export
+export default () => {
   //Container：这里未报错是因为这里只是函数体并未执行。如果执行则会报错。
   return (
     <Container>

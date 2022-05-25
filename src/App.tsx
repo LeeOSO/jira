@@ -1,11 +1,13 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { AuthenticatedApp } from "./authenticated-app";
-import { UnauthenticatedApp } from "./unauthenticated-app";
+// import { AuthenticatedApp } from "./authenticated-app";
+// import { UnauthenticatedApp } from "./unauthenticated-app";
 import { useAuth } from "context/auth-context";
 import { ErrorBoundary } from "./components/error-boundary";
-import { FullPageErrorFallback } from "./components/lib";
+import { FullPageErrorFallback, FullPageLoading } from "./components/lib";
+
+const AuthenticatedApp = React.lazy(() => import("./authenticated-app"));
+const UnauthenticatedApp = React.lazy(() => import("./unauthenticated-app"));
 
 function App() {
   const { user } = useAuth();
@@ -13,7 +15,9 @@ function App() {
     <div className="App">
       {/*当子组件出现渲染错误时，统一处理*/}
       <ErrorBoundary fallbackRender={FullPageErrorFallback}>
-        {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+        <React.Suspense fallback={<FullPageLoading />}>
+          {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+        </React.Suspense>
       </ErrorBoundary>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { RegisterScreen } from "./register";
 import { LoginScreen } from "./login";
-import { Button, Card, Typography } from "antd";
+import { Button, Card } from "antd";
 import styled from "@emotion/styled";
 import { Divider } from "antd/es";
 import logo from "assets/logo.svg";
@@ -10,7 +10,8 @@ import right from "assets/right.svg";
 import { useDocumentTitle } from "../utils";
 import { ErrorBox } from "../components/lib";
 
-export const UnauthenticatedApp = () => {
+// eslint-disable-next-line import/no-anonymous-default-export
+export default () => {
   const [isRegister, setRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   useDocumentTitle("请登录注册以继续");
@@ -73,7 +74,7 @@ const ShadowCard = styled(Card)`
   min-height: 56rem;
   padding: 3.2rem 4rem;
   border-radius: 0.3rem;
-  box-size: border-box;
+  box-sizing: border-box;
   box-shadow: rgba(0, 0, 0, 0, 0.1) 0 0 10px;
   text-align: center;
 `;
