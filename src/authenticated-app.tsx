@@ -7,7 +7,6 @@ import { ReactComponent } from "./assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
 import { Navigate, Route, Routes } from "react-router";
 import { ProjectScreen } from "./screens/project";
-import { BrowserRouter as Router } from "react-router-dom";
 import { resetRoute } from "./utils";
 import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/Project-popover";
@@ -19,20 +18,15 @@ export default () => {
   return (
     <Container>
       {/*context 共享数据时设置Router */}
-      <Router>
-        <PageHeader />
-        <Main>
-          <Routes>
-            <Route path={"/projects"} element={<ProjectListScreen />} />
-            <Route
-              path={"/projects/:projectId/*"}
-              element={<ProjectScreen />}
-            />
-            <Route path={"/*"} element={<Navigate to={"/projects"} />} />
-          </Routes>
-        </Main>
-        <ProjectModal />
-      </Router>
+      <PageHeader />
+      <Main>
+        <Routes>
+          <Route path={"/projects"} element={<ProjectListScreen />} />
+          <Route path={"/projects/:projectId/*"} element={<ProjectScreen />} />
+          <Route path={"/*"} element={<Navigate to={"/projects"} />} />
+        </Routes>
+      </Main>
+      <ProjectModal />
     </Container>
   );
 };

@@ -6,11 +6,12 @@ import {
   useEditConfig,
 } from "./use-optimistic-options";
 import { Project } from "../types/project";
+import { cleanObject } from "./index";
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
   // useQuery根据key变换可以重新触发
-  return useQuery<Project[]>(["projects", param], () =>
+  return useQuery<Project[]>(["projects", cleanObject(param)], () =>
     client("projects", { data: param })
   );
 };

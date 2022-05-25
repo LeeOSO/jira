@@ -5,7 +5,10 @@ export const isVoid = (value: any) =>
   value === undefined || value === null || value === "";
 
 //ts中object类型广泛，函数也是object类型
-export const cleanObject = (object: { [key: string]: unknown }) => {
+export const cleanObject = (object?: { [key: string]: unknown }) => {
+  if (!object) {
+    return {};
+  }
   const result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = result[key];
