@@ -59,10 +59,12 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^8.0.0",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "husky": "^7.0.4",
     "lint-staged": ">=10",
+    "msw": "^0.41.0",
     "prettier": "2.6.0"
   },
   "lint-staged": {

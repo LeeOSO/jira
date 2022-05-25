@@ -19,6 +19,7 @@ const sendQueueReport = () => {
 
 setInterval(sendQueueReport, 5000);
 
+// 性能优化：统计时间消耗
 export const Profiler = ({ metadata, phases, ...props }: Props) => {
   const onRenderCallback: ProfilerOnRenderCallback = (
     id,
