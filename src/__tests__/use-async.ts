@@ -1,6 +1,6 @@
 import { useAsync } from "../utils/use-async";
 import { act, renderHook } from "@testing-library/react-hooks";
-
+// hook测试：
 const defaultState: ReturnType<typeof useAsync> = {
   status: "idle",
   data: null,

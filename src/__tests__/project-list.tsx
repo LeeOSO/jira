@@ -5,7 +5,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { AppProviders } from "../context";
 import { ProjectListScreen } from "../screens/project-list";
 import { ReactNode } from "react";
-
+// 集成测试：
 const apiUrl = process.env.REACT_APP_API_URL;
 const fakeAuth = {
   id: 1,

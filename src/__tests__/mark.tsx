@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { Mark } from "../components/mark";
-
+// 组件测试：
 test("mark", () => {
   const name = "物料管理";
   const keyword = "管理";

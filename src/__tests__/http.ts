@@ -1,7 +1,7 @@
 import { setupServer } from "msw/node";
 import { rest } from "msw";
 import { http } from "../utils/http";
-
+// 集成测试：
 const apiUrl = process.env.REACT_APP_API_URL;
 const server = setupServer();
 // jest：测试框架
